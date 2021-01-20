@@ -41,14 +41,34 @@ client.on('ready', () => {
         })
     })
 
-    firstMessage(client, 'channel id', 'tu kasa ahes', ['🌞'])
+    firstMessage(client, '801394100124385281', 'tu kasa ahes', ['🌞'])
+
+    command(client, 'createtextchannel', (message) => {
+        const name = message.content.replace('!createtextchannel', '')
+
+        message.guild.channels
+            .create(name, {
+                type: 'text',
+            }).then(channel => {
+                const categoryId = '801472906483073034'
+                channel.setParent(categoryId)
+            })
+    })
 
 
     privateMessage(client, "ping", 'pong')
 
 
-    client.users.fetch('user id').then(user => {
-        user.send(('Hello yaar'))
+    command(client, 'createvoicechannel', (message) => {
+        const name = message.content.replace('!createvoicechannel', '')
+        message.guild.channels
+        .create(name, {
+            type: 'voice',
+        }).then(channel => {
+            channel.setUserLimit(10)
+            const categoryId = '801472906483073034'
+            channel.setParent(categoryId)
+        })
     })
 })
 
