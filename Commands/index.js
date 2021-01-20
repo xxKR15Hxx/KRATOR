@@ -40,7 +40,7 @@ client.on('ready', () => {
         })
     })
 
-    firstMessage(client, '801394100124385281', 'hello world!!!', ['🔥', '💥'])
+    firstMessage(client, 'the id for channel', 'hello world!!!', ['🔥', '💥'])
 })
 
 client.login(config.token)
