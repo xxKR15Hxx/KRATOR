@@ -1,9 +1,10 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
 
-const config = require('./config.json')
-const command = require('./command')
-const firstMessage = require('./first-message')
+const config = require('./config.json');
+const command = require('./command');
+const firstMessage = require('./first-message');
+const privateMessage = require('./private-message');
 
 client.on('ready', () => {
     console.log('The client is ready!')
@@ -27,10 +28,10 @@ client.on('ready', () => {
             })
         }
     })
-    
-    
+
+
     command(client, 'status', message => {
-        const content  = message.content.replace('!status', '')
+        const content = message.content.replace('!status', '')
 
         client.user.setPresence({
             activity: {
@@ -40,7 +41,15 @@ client.on('ready', () => {
         })
     })
 
-    firstMessage(client, 'the id for channel', 'hello world!!!', ['🔥', '💥'])
+    firstMessage(client, 'channel id', 'tu kasa ahes', ['🌞'])
+
+
+    privateMessage(client, "ping", 'pong')
+
+
+    client.users.fetch('user id').then(user => {
+        user.send(('Hello yaar'))
+    })
 })
 
 client.login(config.token)
