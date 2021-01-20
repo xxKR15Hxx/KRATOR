@@ -3,6 +3,7 @@ const client = new Discord.Client()
 
 const config = require('./config.json')
 const command = require('./command')
+const firstMessage = require('./first-message')
 
 client.on('ready', () => {
     console.log('The client is ready!')
@@ -38,6 +39,8 @@ client.on('ready', () => {
             }
         })
     })
+
+    firstMessage(client, '801394100124385281', 'hello world!!!', ['🔥', '💥'])
 })
 
 client.login(config.token)
