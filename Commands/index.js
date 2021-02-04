@@ -5,9 +5,14 @@ const config = require('./config.json');
 const command = require('./command');
 const firstMessage = require('./first-message');
 const privateMessage = require('./private-message');
-const poll = require('./poll')
+const poll = require('./poll');
+const sendMessage = require('./send-message');
+const mongo = require('./mongo');
+const welcome = require('./welcome');
 
-client.on('ready', () => {
+const memberCount = require('./member-count')
+
+client.on('ready', async () => {
     console.log('The client is ready!')
 
     command(client, ['ping', 'test'], (message) => {
@@ -56,7 +61,7 @@ client.on('ready', () => {
             .create(name, {
                 type: 'text',
             })
-            message.react('👍')
+        message.react('👍')
     })
 
 
@@ -71,7 +76,7 @@ client.on('ready', () => {
             }).then(channel => {
                 channel.setUserLimit(1);
             })
-            message.react('👍')
+        message.react('👍')
     })
 
     const logo = 'https://core.telegram.org/file/811140327/1/zlN4goPTupk/9ff2f2f01c4bd1b013'
@@ -123,12 +128,6 @@ client.on('ready', () => {
             .setTitle('**__!help__**')
             .setThumbnail(logo)
             .addFields({
-                name: 'add:',
-                value: '**!add <num1> <num2>** - addition'
-            }, {
-                name: 'sub:',
-                value: '**!sub <num1> <num2>** - subtraction'
-            }, {
                 name: 'createvoicechannel:',
                 value: '**!createvoicechannel <name>** - creates voice channels'
             }, {
@@ -193,7 +192,7 @@ client.on('ready', () => {
                 const targetMember = message.guild.members.cache.get(target.id)
 
                 client.users.fetch(target.id).then(user => {
-                    user.send('https://discord.gg/uwVETNMh').then(() => {
+                    user.send('https://discord.gg/ZauQm8jC').then(() => {
                         targetMember.kick();
                     });
                 })
@@ -215,6 +214,28 @@ client.on('ready', () => {
 
     poll(client)
 
+
+    memberCount(client)
+
+    const guild = client.guilds.cache.get('801005076474626048')
+    const channel = guild.channels.cache.get('801005076474626052')
+
+    sendMessage(channel, 'hello World!', 1) // channe;s, 'text', time for delete
+
+
+    await mongo().then(mongoose => {
+        try {
+            console.log('connected to mongo')
+        } catch (e) {
+
+        }
+        finally {
+            mongoose.connection.close()
+        }
+    })
+
+
+    welcome(client)
 })
 
 client.login(config.token)
