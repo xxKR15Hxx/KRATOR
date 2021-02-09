@@ -6,11 +6,11 @@ const command = require('./command');
 const firstMessage = require('./first-message');
 const privateMessage = require('./private-message');
 const poll = require('./poll');
-const sendMessage = require('./send-message');
-const mongo = require('./mongo');
-const welcome = require('./welcome');
-
 const memberCount = require('./member-count')
+const mongo = require('./mongo')
+const welcome = require('./welcome')
+const messageCounter = require('./message-counter')
+const mute = require('./mute')
 
 client.on('ready', async () => {
     console.log('The client is ready!')
@@ -219,24 +219,22 @@ client.on('ready', async () => {
 
     const guild = client.guilds.cache.get('801005076474626048')
     const channel = guild.channels.cache.get('801005076474626052')
-
-    sendMessage(channel, 'hello World!', 1) // channe;s, 'text', time for delete
-
-
-    await mongo().then(mongoose => {
+    
+    // sendMessage(channel, 'hello World!', 1) // channe;s, 'text', time for delete
+    await mongo().then((mongoose) => {
         try {
-            console.log('connected to mongo')
-        } catch (e) {
+          console.log('Connected to mongo!')
+        } finally {
+          mongoose.connection.close()
+        }
+      })
 
-        }
-        finally {
-            mongoose.connection.close()
-        }
+     // welcome(client)
+
+    messageCounter(client)
+
+    mute(client)
     })
-
-
-    welcome(client)
-})
 
 client.login(config.token)
 

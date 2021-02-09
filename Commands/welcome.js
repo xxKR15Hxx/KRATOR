@@ -1,16 +1,15 @@
 const mongo = require('./mongo')
 const command = require('./command')
-const welcomeSchema = require('./schemas/welcome-schema')
+const welcomeSchema = require('./schemas/welcome-Schema')
 
 module.exports = (client) => {
     const cache = {}
-
 
     command(client, 'setwelcome', async (message) => {
         const { member, channel, content, guild } = message
 
         if (!member.hasPermission('ADMINISTRATOR')) {
-            channel.send('You do not have the permssion to run this command.')
+            channel.send('You do not have permission to run this command.')
             return
         }
 
@@ -18,41 +17,46 @@ module.exports = (client) => {
 
         const split = text.split(' ')
 
-        if (split.legth < 2) {
-            channel.send('please provide a welcome message')
+        if (split.length < 2) {
+            channel.send('Please provide a welcome message')
+            return
         }
 
         split.shift()
         text = split.join(' ')
 
-
         cache[guild.id] = [channel.id, text]
+
         await mongo().then(async (mongoose) => {
             try {
-                await welcomeSchema.findOneAndUpdate({
-                    _id: guild.id,
-                }, {
-                    _id: guild.id,
-                    channelId: channel.id,
-                    text
-
-                }, {
-                    upsert: true
-                })
+                await welcomeSchema.findOneAndUpdate(
+                    {
+                        _id: guild.id,
+                    },
+                    {
+                        _id: guild.id,
+                        channelId: channel.id,
+                        text,
+                    },
+                    {
+                        upsert: true,
+                    }
+                )
             } finally {
                 mongoose.connection.close()
             }
         })
     })
 
-    const onJoin = async member => {
+    const onJoin = async (member) => {
         const { guild } = member
 
         let data = cache[guild.id]
 
         if (!data) {
-            console.log('fetching form database!')
-            await mongo().then(async mongoose => {
+            console.log('FETCHING FROM DATABASE')
+
+            await mongo().then(async (mongoose) => {
                 try {
                     const result = await welcomeSchema.findOne({ _id: guild.id })
 
@@ -63,18 +67,19 @@ module.exports = (client) => {
             })
         }
 
-        const channelid = data[0]
+        const channelId = data[0]
         const text = data[1]
 
-        const channel = guild.channels.cache.get(channelid)
+        const channel = guild.channels.cache.get(channelId)
         channel.send(text.replace(/<@>/g, `<@${member.id}>`))
     }
 
-    command(client, 'simjoin', message => {
+    command(client, 'simjoin', (message) => {
         onJoin(message.member)
+        message.react('👍')
     })
 
-    client.on('guildMemberAdd', member => {
+    client.on('guildMemberAdd', (member) => {
         onJoin(member)
     })
 }

@@ -9,3 +9,4 @@ module.exports = (channel, text ,duration = 10) => {
         }, 1000 * duration)
     })
 }
+
