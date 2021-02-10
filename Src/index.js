@@ -191,8 +191,6 @@ client.on('ready', async () => {
 
     })
 
-
-
     command(client, 'kick', message => {
         const { member, mentions } = message
         const tag = member.id
