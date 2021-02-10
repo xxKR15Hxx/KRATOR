@@ -87,7 +87,7 @@ client.on('ready', async () => {
             .setImage(logo)
             .setThumbnail(logo)
             .setFooter('this is a footer')
-            .setColor('#00AAFF')
+            .setColor('#438D80')
             .addFields({
                 name: 'Field 1',
                 value: 'Hello World'
@@ -199,7 +199,6 @@ client.on('ready', async () => {
         message.react('👍')
         if (member.hasPermission('KICK_MEMBERS')) {
             const target = mentions.users.first()
-
             if (target) {
                 const targetMember = message.guild.members.cache.get(target.id)
 
