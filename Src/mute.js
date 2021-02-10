@@ -1,4 +1,4 @@
-const redis = require('./redis')
+const redis = require('../db/redis')
 const command = require('./command')
 
 module.exports = (client) => {
@@ -29,9 +29,9 @@ module.exports = (client) => {
     if (role) {
       member.roles.add(role)
       console.log('Muted ' + member.id)
+      
     }
   }
-
   const onJoin = async (member) => {
     const { id, guild } = member
 
@@ -62,7 +62,7 @@ module.exports = (client) => {
   command(client, 'mute', async (message) => {
     // !mute @ duration duration_type
 
-    const syntax = '!mute <@> <duration as a number> <m, h, d, or life>'
+    const syntax = '!mute <@> <duration as a number> <m, h, d, s or life>'
 
     const { member, channel, content, mentions, guild } = message
 
@@ -91,6 +91,7 @@ module.exports = (client) => {
       h: 60 * 60,
       d: 60 * 60 * 24,
       life: -1,
+      s: 1
     }
 
     if (!durations[durationType]) {

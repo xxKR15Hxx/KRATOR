@@ -7,11 +7,10 @@ const firstMessage = require('./first-message');
 const privateMessage = require('./private-message');
 const poll = require('./poll');
 const memberCount = require('./member-count')
-const mongo = require('./mongo')
+const mongo = require('../db/mongo')
 const welcome = require('./welcome')
 const messageCounter = require('./message-counter')
 const mute = require('./mute')
-const icon = require('./icon')
 
 client.on('ready', async () => {
     console.log('The client is ready!')
@@ -247,8 +246,6 @@ client.on('ready', async () => {
     messageCounter(client)
 
     mute(client)
-
-    icon(client)
 })
 
 client.login(config.token)

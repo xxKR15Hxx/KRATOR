@@ -1,6 +1,6 @@
-const mongo = require('./mongo')
+const mongo = require('../db/mongo')
 const command = require('./command')
-const welcomeSchema = require('./schemas/welcome-Schema')
+const welcomeSchema = require('../schemas/welcome-Schema')
 
 module.exports = (client) => {
     const cache = {}
