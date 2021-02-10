@@ -11,6 +11,7 @@ const mongo = require('./mongo')
 const welcome = require('./welcome')
 const messageCounter = require('./message-counter')
 const mute = require('./mute')
+const icon = require('./icon')
 
 client.on('ready', async () => {
     console.log('The client is ready!')
@@ -28,7 +29,7 @@ client.on('ready', async () => {
     })
 
     command(client, ['cc', 'clearchannel'], message => {
-        if (message.member.hasPermission('ADMININSTRATOR')) {
+        if (message.member.hasPermission('ADMINISTRATOR')) {
             message.channel.messages.fetch().then((resuslts) => {
                 message.channel.bulkDelete(resuslts);
                 const addReactions = (message) => {
@@ -79,7 +80,7 @@ client.on('ready', async () => {
         message.react('👍')
     })
 
-    const logo = 'https://core.telegram.org/file/811140327/1/zlN4goPTupk/9ff2f2f01c4bd1b013'
+    const logo = 'https://cdn.discordapp.com/attachments/754906819540811797/808908058880376833/dc4993a0-b0ba-45bb-b9b2-8c68b9361fe3_200x200.png'
     command(client, 'embed', (message) => {
         const embed = new Discord.MessageEmbed()
             .setTitle('Example Text embed')
@@ -125,25 +126,37 @@ client.on('ready', async () => {
     })
     command(client, 'help', message => {
         const embed = new Discord.MessageEmbed()
-            .setTitle('**__!help__**')
+            .setTitle('**__Help__**')
             .setThumbnail(logo)
             .addFields({
-                name: 'createvoicechannel:',
+                name: 'Createvoicechannel:',
                 value: '**!createvoicechannel <name>** - creates voice channels'
             }, {
-                name: 'createtextchannel:',
+                name: 'Createtextchannel:',
                 value: '**!createtextxhannel <name>** - create text channels'
             }, {
-                name: 'serverinfo:',
+                name: 'Serverinfo:',
                 value: '**!serverinfo <num1> <num2>** - gives server info'
             }, {
-                name: 'status:',
+                name: 'Status:',
                 value: '**!status** - updates status'
             }, {
-                name: 'clearchannel:',
+                name: 'Clearchannel:',
                 value: '**!clearchannel** - clears the entire channel'
-            })
-            .setThumbnail(logo)
+            }, {
+                name: 'Ban',
+                value: '**!ban <name>** - bans the person'
+            }, {
+                name: 'Kick:',
+                value: '**!kick <name>** - Kicks the person'
+            }, {
+                name: 'poll:',
+                value: '**!poll** - A basic poll with 2 emojis'
+            }, {
+                name: 'mute:',
+                value: `**!mute <@> <duration as a number> <m, h, d, or life> ** - mutes a person for a specific time`
+            }
+            )
             .setFooter('more in development', logo)
         message.channel.send(embed)
         message.react('👍')
@@ -192,7 +205,7 @@ client.on('ready', async () => {
                 const targetMember = message.guild.members.cache.get(target.id)
 
                 client.users.fetch(target.id).then(user => {
-                    user.send('https://discord.gg/ZauQm8jC').then(() => {
+                    user.send('https://discord.gg/94A6KKM8').then(() => {
                         targetMember.kick();
                     });
                 })
@@ -219,22 +232,24 @@ client.on('ready', async () => {
 
     const guild = client.guilds.cache.get('801005076474626048')
     const channel = guild.channels.cache.get('801005076474626052')
-    
+
     // sendMessage(channel, 'hello World!', 1) // channe;s, 'text', time for delete
     await mongo().then((mongoose) => {
         try {
-          console.log('Connected to mongo!')
+            console.log('Connected to mongo!')
         } finally {
-          mongoose.connection.close()
+            mongoose.connection.close()
         }
-      })
+    })
 
-     // welcome(client)
+    welcome(client)
 
     messageCounter(client)
 
     mute(client)
-    })
+
+    icon(client)
+})
 
 client.login(config.token)
 
