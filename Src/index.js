@@ -151,7 +151,7 @@ client.on('ready', async () => {
                 value: '**!kick <name>** - Kicks the person'
             }, {
                 name: 'poll:',
-                value: '**!poll** - A basic poll with 2 emojis'
+                value: '**!poll**mem - A basic poll with 2 emojis'
             }, {
                 name: 'mute:',
                 value: `**!mute <@> <duration as a number> <m, h, d, or life> ** - mutes a person for a specific time`
