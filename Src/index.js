@@ -11,6 +11,7 @@ const mongo = require('../db/mongo')
 const welcome = require('./welcome')
 const messageCounter = require('./message-counter')
 const mute = require('./mute')
+require('events').EventEmitter.defaultMaxListeners = Infinity;
 
 client.on('ready', async () => {
     console.log('The client is ready!')
@@ -243,7 +244,11 @@ client.on('ready', async () => {
     messageCounter(client)
 
     mute(client)
+    
+
+    
 })
+
 
 client.login(config.token)
 
